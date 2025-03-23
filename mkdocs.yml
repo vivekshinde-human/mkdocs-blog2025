@@ -1,0 +1,11 @@
+
+site_name: CURIOUS_ROBOT :)
+
+nav:
+  - Home: index.md
+  - About: about.md
+
+theme:
+  name: 'material'
+
+copyright: Copyright &copy; 2025 - 2029 Vivek Shinde
