@@ -1,32 +1,24 @@
-name: Deploy to GitHub Pages
+name: Deploy MkDocs to GitHub Pages (Docker)
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Setup Git Config
+      - name: Build MkDocs site (Docker)
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Build with MkDocs
-        uses: docker://squidfunk/mkdocs-material
-        with:
-          args: build --site-dir site
+          docker run --rm -v $(pwd):/docs squidfunk/mkdocs-material mkdocs build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
-          force_orphan: true
-          keep_files: false
